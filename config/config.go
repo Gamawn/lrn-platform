@@ -10,7 +10,7 @@ type Config struct {
 		Password string `yaml:"password"`
 		Host     string `yaml:"host"`
 		DbName   string `yaml:"dbname"`
-	}
+	} `yaml:"database"`
 }
 
 func NewConfig() (*Config, error) {
@@ -25,10 +25,10 @@ func NewConfig() (*Config, error) {
 		return nil, err
 	}
 
-	config.Database.Password = viper.GetString("database.password")
-	config.Database.Username = viper.GetString("database.user")
-	config.Database.Host = viper.GetString("database.host")
-	config.Database.DbName = viper.GetString("database.dbname")
+	err = viper.Unmarshal(config)
+	if err != nil {
+		return nil, err
+	}
 
 	return config, nil
 }
